@@ -40,4 +40,9 @@ public class Computer {
                 ", model='" + model + '\'' +
                 '}';
     }
+
+    public void setComputer(Computer computer){
+        this.setId(computer.id);
+        this.setModel(computer.model);
+    }
 }
