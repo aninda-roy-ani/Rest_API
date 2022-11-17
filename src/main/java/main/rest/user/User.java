@@ -1,49 +1,33 @@
 package main.rest.user;
 
-import main.rest.computer.Computer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-
+@Entity
+@Table(name = "userdb")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    private Integer userId;
     private String name;
-    private List<Computer> computers = new ArrayList<>();
+    private String computerID;
 
-    /*
-    (
-            Arrays.asList(
-                    new Computer("a", "Fujitsu"),
-                    new Computer( "b" , "Dell")
-            )
-    );
-     */
+    public User(Integer id, String name, String computerID) {
+        this.id = id;
+        this.name = name;
+        this.computerID = computerID;
+    }
 
     public User() {
+
     }
 
-    public User(Integer userId, String name) {
-        this.userId = userId;
-        this.name = name;
+    public Integer getId() {
+        return id;
     }
 
-    public User(Integer userId, String name, List<Computer> computers) {
-        this.userId = userId;
-        this.name = name;
-        this.computers = computers;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -54,26 +38,11 @@ public class User {
         this.name = name;
     }
 
-    public List<Computer> getComputers() {
-        return computers;
+    public String getComputerID() {
+        return computerID;
     }
 
-    public void setComputers(List<Computer> computers) {
-        this.computers = computers;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", name='" + name + '\'' +
-                ", computers=" + computers +
-                '}';
-    }
-
-    public void setUser(User user){
-        this.setUserId(user.getUserId());
-        this.setName(user.getName());
-        this.setComputers(user.getComputers());
+    public void setComputerID(String computerID) {
+        this.computerID = computerID;
     }
 }

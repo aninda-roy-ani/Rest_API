@@ -1,60 +1,45 @@
 package main.rest.user;
 
-import main.rest.computer.Computer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
 public class UserController {
 
-    static List<User> userList = new ArrayList<>(Arrays.asList(
-            new User(1, "Linda", new ArrayList<>(
-                    Arrays.asList(
-                            new Computer("a", "Fujitsu")
-                    )
-            )),
-            new User(2, "Adam", new ArrayList<>(
-                    Arrays.asList(
-                            new Computer("a", "Fujitsu"),
-                            new Computer( "b" , "Dell")
-                    )
-            )),
-            new User( 3, "Montana" , new ArrayList<>(
-                    Arrays.asList(
-                            new Computer( "b" , "Dell")
-                    )
-            )))
-    );
+    @Autowired
+    UserRepository userr;
 
     @GetMapping("/users")
     public List<User> getUsers(){
-        return userList;
+        return userr.findAll();
     }
 
     @GetMapping("/users/{userId}")
     public User getUser(@PathVariable String userId){
-        return userList.stream().filter(user -> user.getUserId().equals(Integer.parseInt(userId))).findFirst().get();
+        //return userList.stream().filter(user -> user.getUserId().equals(Integer.parseInt(userId))).findFirst().get();
+
+        return userr.findById(Integer.parseInt(userId)).orElseThrow();
     }
 
     @PostMapping("/users")
     public void addUser(@RequestBody User user){
-        System.out.println(user.getUserId());
-        System.out.println(user.getName());
-        userList.add(user);
+        //userList.add(user);
+        userr.save(user);
     }
 
     @PutMapping("/users/{userId}")
     public void updateUser(@PathVariable String userId, @RequestBody User user){
-        userList.stream().filter(user1 -> user1.getUserId().equals(Integer.parseInt(userId))).
-                findFirst().get().setUser(user);
+        //userList.stream().filter(user1 -> user1.getUserId().equals(Integer.parseInt(userId))).
+        //        findFirst().get().setUser(user);
+        userr.save(user);
     }
 
     @DeleteMapping("/users/{userId}")
     public void deleteUser(@PathVariable String userId){
-        userList.removeIf(user -> user.getUserId().equals(Integer.parseInt(userId)));
+        //userList.removeIf(user -> user.getUserId().equals(Integer.parseInt(userId)));
+        userr.deleteById(Integer.parseInt(userId));
     }
 
 }
