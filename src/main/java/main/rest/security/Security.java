@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-package main.rest.securitybasic;
+package main.rest.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,26 +11,26 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityBasic extends WebSecurityConfigurerAdapter {
+public class Security extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SecurityBasic(PasswordEncoder passwordEncoder) {
+    public Security(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                //.csrf().disable()
+                .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/index","/css","/").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -48,13 +48,17 @@ public class SecurityBasic extends WebSecurityConfigurerAdapter {
                 .roles("GoodMan")
                 .build();
 
+        UserDetails user2 = User.builder()
+                .username("Hitler")
+                .password(passwordEncoder.encode("Adolf"))
+                .roles("BadMan")
+                .build();
+
         return new InMemoryUserDetailsManager(
-                user1
+                user1,
+                user2
         );
     }
-
-
-
 }
 
 

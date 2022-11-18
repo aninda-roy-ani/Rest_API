@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-package main.rest.securitybasic;
+package main.rest.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
